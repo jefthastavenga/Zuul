@@ -17,26 +17,40 @@ class Game
 	private void CreateRooms()
 	{
 		// Create the rooms
+		Room inside = new Room("inside the main hal of the university");
 		Room outside = new Room("outside the main entrance of the university");
 		Room theatre = new Room("in a lecture theatre");
 		Room pub = new Room("in the campus pub");
 		Room lab = new Room("in a computing lab");
-		Room office = new Room("in the computing admin office");
+		Room basement = new Room("in the basement");
+		Room secondFloor = new Room("on the second floor");
+		Room storegeroom = new Room("in the storage room");
+		Room bedroom = new Room("in the bedroom");
 
 		// Initialise room exits
-		outside.AddExit("east", theatre);
-		outside.AddExit("south", lab);
-		outside.AddExit("west", pub);
+		outside.AddExit("inside", inside);
 
-		theatre.AddExit("west", outside);
+		inside.AddExit("east", theatre);
+		inside.AddExit("south", lab);
+		inside.AddExit("west", pub);
+		inside.AddExit("down", basement);
+		inside.AddExit("up", secondFloor);
 
-		pub.AddExit("east", outside);
+		theatre.AddExit("west", inside);
 
-		lab.AddExit("north", outside);
-		lab.AddExit("east", office);
+		pub.AddExit("east", inside);
 
-		office.AddExit("west", lab);
+		lab.AddExit("north", inside);
 
+		basement.AddExit("up", inside);
+		basement.AddExit("north", storegeroom);
+
+		secondFloor.AddExit("down", inside);
+		secondFloor.AddExit("north", bedroom);
+		
+		storegeroom.AddExit("south", basement);
+
+		bedroom.AddExit("south", secondFloor);	
 		// Create your Items here
 		// ...
 		// And add them to the Rooms
@@ -99,6 +113,9 @@ class Game
 			case "quit":
 				wantToQuit = true;
 				break;
+			case "look":
+				PrintLook();
+				break;
 		}
 
 		return wantToQuit;
@@ -117,6 +134,10 @@ class Game
 		Console.WriteLine();
 		// let the parser print the commands
 		parser.PrintValidCommands();
+	}
+	private void PrintLook()
+	{
+		Console.WriteLine(currentRoom.GetLongDescription());
 	}
 
 	// Try to go to one direction. If there is an exit, enter the new
