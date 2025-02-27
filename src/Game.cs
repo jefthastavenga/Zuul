@@ -4,12 +4,14 @@ class Game
 {
 	// Private fields
 	private Parser parser;
+	private Player Player;
 	private Room currentRoom;
 
 	// Constructor
 	public Game()
 	{
 		parser = new Parser();
+		Player = new Player();
 		CreateRooms();
 	}
 
@@ -24,7 +26,7 @@ class Game
 		Room lab = new Room("in a computing lab");
 		Room basement = new Room("in the basement");
 		Room secondFloor = new Room("on the second floor");
-		Room storegeroom = new Room("in the storage room");
+		Room storageroom = new Room("in the storage room");
 		Room bedroom = new Room("in the bedroom");
 
 		// Initialise room exits
@@ -43,12 +45,12 @@ class Game
 		lab.AddExit("north", inside);
 
 		basement.AddExit("up", inside);
-		basement.AddExit("north", storegeroom);
+		basement.AddExit("north", storageroom);
 
 		secondFloor.AddExit("down", inside);
 		secondFloor.AddExit("north", bedroom);
 		
-		storegeroom.AddExit("south", basement);
+		storageroom.AddExit("south", basement);
 
 		bedroom.AddExit("south", secondFloor);	
 		// Create your Items here
@@ -165,3 +167,4 @@ class Game
 		Console.WriteLine(currentRoom.GetLongDescription());
 	}
 }
+
