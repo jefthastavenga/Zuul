@@ -49,10 +49,10 @@ class Game
 
 		secondFloor.AddExit("down", inside);
 		secondFloor.AddExit("north", bedroom);
-		
+
 		storageroom.AddExit("south", basement);
 
-		bedroom.AddExit("south", secondFloor);	
+		bedroom.AddExit("south", secondFloor);
 		// Create your Items here
 		// ...
 		// And add them to the Rooms
@@ -98,7 +98,7 @@ class Game
 	{
 		bool wantToQuit = false;
 
-		if(command.IsUnknown())
+		if (command.IsUnknown())
 		{
 			Console.WriteLine("I don't know what you mean...");
 			return wantToQuit; // false
@@ -118,6 +118,9 @@ class Game
 			case "look":
 				PrintLook();
 				break;
+			case "status":
+				Status();
+				break;
 		}
 
 		return wantToQuit;
@@ -126,7 +129,7 @@ class Game
 	// ######################################
 	// implementations of user commands:
 	// ######################################
-	
+
 	// Print out some help information.
 	// Here we print the mission and a list of the command words.
 	private void PrintHelp()
@@ -146,7 +149,7 @@ class Game
 	// room, otherwise print an error message.
 	private void GoRoom(Command command)
 	{
-		if(!command.HasSecondWord())
+		if (!command.HasSecondWord())
 		{
 			// if there is no second word, we don't know where to go...
 			Console.WriteLine("Go where?");
@@ -157,14 +160,19 @@ class Game
 
 		// Try to go to the next room.
 		Room nextRoom = currentRoom.GetExit(direction);
+		Player.Damage(10);
 		if (nextRoom == null)
 		{
-			Console.WriteLine("There is no door to "+direction+"!");
+			Console.WriteLine("There is no door to " + direction + "!");
 			return;
 		}
 
 		currentRoom = nextRoom;
 		Console.WriteLine(currentRoom.GetLongDescription());
+	}
+	private void Status()
+	{
+		Console.WriteLine("Player's health: " + Player.health);
 	}
 }
 
