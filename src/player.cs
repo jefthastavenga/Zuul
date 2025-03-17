@@ -9,8 +9,16 @@ class Player
         CurrentRoom = null;
     }
     // fields
-    public int health;
-    // // constructor
+    private int health = 100;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+   public bool IsHurt()
+   {
+   return true;     
+   }
 
     // methods
     public int Damage(int amount)
@@ -23,7 +31,7 @@ class Player
         health += amount;
         return health;
     }
-    private bool IsAlive()
+    public bool IsAlive()
     {
         if (health <= 0)
         {

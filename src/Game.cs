@@ -5,7 +5,7 @@ class Game
 	// Private fields
 	private Parser parser;
 	private Player Player;
-	private Room currentRoom;
+	// private Room currentRoom;
 
 	// Constructor
 	public Game()
@@ -59,7 +59,7 @@ class Game
 		// ...
 
 		// Start game outside
-		currentRoom = outside;
+		Player.CurrentRoom = outside;
 	}
 
 	//  Main play routine. Loops until end of play.
@@ -88,7 +88,7 @@ class Game
 		Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
 		Console.WriteLine("Type 'help' if you need help.");
 		Console.WriteLine();
-		Console.WriteLine(currentRoom.GetLongDescription());
+		Console.WriteLine(Player.CurrentRoom.GetLongDescription());
 	}
 
 	// Given a command, process (that is: execute) the command.
@@ -116,7 +116,7 @@ class Game
 				wantToQuit = true;
 				break;
 			case "look":
-				PrintLook();
+				Look(command);
 				break;
 			case "status":
 				Status();
@@ -140,11 +140,10 @@ class Game
 		// let the parser print the commands
 		parser.PrintValidCommands();
 	}
-	private void PrintLook()
+	private void Look(Command command)
 	{
-		Console.WriteLine(currentRoom.GetLongDescription());
+		Console.WriteLine(Player.CurrentRoom.GetLongDescription());
 	}
-
 	// Try to go to one direction. If there is an exit, enter the new
 	// room, otherwise print an error message.
 	private void GoRoom(Command command)
@@ -159,20 +158,30 @@ class Game
 		string direction = command.SecondWord;
 
 		// Try to go to the next room.
-		Room nextRoom = currentRoom.GetExit(direction);
-		Player.Damage(10);
+		Room nextRoom = Player.CurrentRoom.GetExit(direction);
+		Player.Damage(50);
 		if (nextRoom == null)
+		
+		if (Player.Health >= 10)
 		{
-			Console.WriteLine("There is no door to " + direction + "!");
-			return;
+			Player.CurrentRoom = nextRoom;
+			Console.WriteLine(Player.CurrentRoom.GetLongDescription());
 		}
 
-		currentRoom = nextRoom;
-		Console.WriteLine(currentRoom.GetLongDescription());
+		if (Player.Health <= 1)
+		{
+			// Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine("you have died.");
+			Environment.Exit(0);
+		}
+
+		Player.CurrentRoom = nextRoom;
+		Console.WriteLine(Player.CurrentRoom.GetLongDescription());
 	}
 	private void Status()
 	{
-		Console.WriteLine("Player's health: " + Player.health);
+		Console.WriteLine("Player's health: " + Player.Health);
 	}
 }
 
